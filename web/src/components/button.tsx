@@ -1,13 +1,16 @@
 import { ComponentProps, ReactNode } from 'react'
 import { tv, VariantProps } from 'tailwind-variants'
 
-const buttonVariants = tv({
+export const buttonVariants = tv({
   base: 'rounded-lg px-5 font-medium flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed',
 
   variants: {
     variant: {
       primary: 'bg-lime-300 text-lime-950 enabled:hover:bg-lime-400',
       secondary: 'bg-zinc-800 text-zinc-200 enabled:hover:bg-zinc-700',
+      outline:
+        'bg-transparent border border-zinc-800 text-zinc-200 enabled:hover:bg-zinc-800',
+      ghost: 'bg-transparent text-zinc-200 enabled:hover:bg-zinc-800',
     },
 
     size: {

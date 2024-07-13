@@ -1,5 +1,6 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useState } from 'react'
+import { DateRange } from 'react-day-picker'
 import { ConfirmTripModal } from './confirm-trip-modal'
 import { InviteGuestsModal } from './invite-guests-modal'
 import { DestinationAndDateStep } from './steps/destination-and-date-step'
@@ -9,7 +10,13 @@ export function CreateTripPage() {
   const [isGuestsInputOpen, setIsGuestsInputOpen] = useState(false)
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
   const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false)
+
+  const [destination, setDestination] = useState('')
+  const [eventStartAndEndDates, setEventStartAndEndDates] = useState<
+    DateRange | undefined
+  >()
   const [guests, setGuests] = useState<string[]>([])
+
   const [animationRef] = useAutoAnimate()
 
   function openGuestsInput() {
@@ -51,6 +58,11 @@ export function CreateTripPage() {
             closeGuestsInput={closeGuestsInput}
             isGuestsInputOpen={isGuestsInputOpen}
             openGuestsInput={openGuestsInput}
+            //
+            date={eventStartAndEndDates}
+            onSelectDate={setEventStartAndEndDates}
+            destination={destination}
+            onDestinationChange={setDestination}
           />
 
           {isGuestsInputOpen && (
@@ -92,8 +104,11 @@ export function CreateTripPage() {
 
       {isConfirmTripModalOpen && (
         <ConfirmTripModal
-          guests={guests}
           closeConfirmTripModal={closeConfirmTripModal}
+          //
+          destination={destination}
+          eventStartAndEndDates={eventStartAndEndDates}
+          guests={guests}
         />
       )}
     </main>

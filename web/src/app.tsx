@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { Toaster } from 'sonner'
 
 const CreateTripPage = lazy(() =>
   import('./pages/create-trip').then((module) => ({
@@ -26,8 +27,11 @@ const router = createBrowserRouter([
 
 export function App() {
   return (
-    <Suspense>
-      <RouterProvider router={router} />
-    </Suspense>
+    <>
+      <Suspense>
+        <RouterProvider router={router} />
+      </Suspense>
+      <Toaster richColors />
+    </>
   )
 }
