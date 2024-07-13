@@ -2,6 +2,8 @@ import type { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import nodemailer from 'nodemailer';
 import { z } from "zod";
+import { env } from "../env";
+import { ClientError } from "../errors/client-error";
 import { dayjs } from "../lib/dayjs";
 import { getMailClient } from "../lib/mail";
 import { prisma } from "../lib/primsa";
@@ -23,11 +25,11 @@ export async function createTrip(app: FastifyInstance) {
     const { destination, ends_at, starts_at, emails_to_invite, owner_email, owner_name } = request.body
 
     if (dayjs(starts_at).isBefore(new Date())) {
-      throw new Error('The trip cannot start in the past')
+      throw new ClientError('The trip cannot start in the past')
     }
 
     if (dayjs(ends_at).isBefore(starts_at)) {
-      throw new Error('The trip cannot end before it starts')
+      throw new ClientError('The trip cannot end before it starts')
     }
 
     const trip = await prisma.trip.create({
@@ -57,7 +59,7 @@ export async function createTrip(app: FastifyInstance) {
 
     const formattedStartDate = dayjs(starts_at).format('LL')
     const formattedEndDate = dayjs(ends_at).format('LL')
-    const confirmationLink = `http://localhost:3333/trips/${trip.id}/confirm`
+    const confirmationLink = `${env.API_BASE_URL}/trips/${trip.id}/confirm`
 
     const mail = await getMailClient()
     const message = await mail.sendMail({
